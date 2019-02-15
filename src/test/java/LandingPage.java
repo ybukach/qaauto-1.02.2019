@@ -9,11 +9,10 @@ public class LandingPage {
     }
 
 
-    WebDriver driver;
-    WebElement signInButton;
-    WebElement userMailField;
-    WebElement userPasswordField;
-    WebElement profileNavMenuItem;
+    private WebDriver driver;
+    private WebElement signInButton;
+    private WebElement userMailField;
+    private WebElement userPasswordField;
 
 
     public LandingPage(WebDriver driver) {
@@ -21,13 +20,10 @@ public class LandingPage {
         initElements();
     }
 
-    public void initElements() {
+    private void initElements() {
         signInButton = driver.findElement(By.xpath("//input[@id='login-submit']"));
         userMailField = driver.findElement(By.xpath("//input[@id='login-email']"));
         userPasswordField = driver.findElement(By.xpath("//input[@id='login-password']"));
-        //profileNavMenuItem = driver.findElement(By.xpath("//Li[@id='profile-nav-item']"));
-
-
     }
 
 
@@ -39,23 +35,11 @@ public class LandingPage {
 
 
     public boolean isPageLoaded() {
-        boolean booleanFlag= true;
-        if (signInButton.isDisplayed())
-        {booleanFlag= true;}
-        else
-        {booleanFlag = false;}
-        return booleanFlag;
+        return signInButton.isDisplayed()
+                && driver.getCurrentUrl().equals("https://www.linkedin.com/")
+                && driver.getTitle().equals("LinkedIn: Войти или зарегистрироваться");
 
             }
 
-
-
-
-
-    /*static void sum(int x, int y){
-
-        int z = x + y;
-        System.out.println(z);
-    }*/
 
 }
