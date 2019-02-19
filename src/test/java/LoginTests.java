@@ -2,17 +2,52 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class LoginTests {
+    WebDriver driver;
+
+    @BeforeMethod
+    public void  beforeMethod() {
+        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
+        driver = new ChromeDriver();
+        driver.get("https://www.linkedin.com/");
+    }
+
+    @AfterMethod
+    public void afterMethod() {
+        driver.quit();
+    }
+
+
+    @DataProvider
+    public Object[][] validData() {
+        return new Object[][]{
+                {"nct.test1@gmail.com", "Bukach2019"},
+                {"NCT.test1@gmail.com", "Bukach2019"},
+                {"  nct.test1@gmail.com", "Bukach2019"},
+        };
+    }
+
+    @Test(dataProvider = "validData")
+    public void positiveLoginTestCorrectEmailCorrectPassword(String userEmail, String userPassword) {
+
+        LandingPage landingPage = new LandingPage(driver);
+        Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
+
+        landingPage.Login(userEmail, userPassword);
+
+        HomePage homePage = new HomePage(driver);
+        Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded.");
+
+
+    }
 
     @Test
     public void negativeLoginTestWrongEmailEmptyPasswordReturnedToLanding() {
-
-        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
-
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
 
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded());
@@ -24,30 +59,7 @@ public class LoginTests {
     }
 
     @Test
-
-
-    public void positiveLoginTestCorrectEmailCorrectPassword() {
-        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
-
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
-
-        LandingPage landingPage = new LandingPage(driver);
-        Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
-
-        landingPage.Login("nct.test1@gmail.com", "Bukach2019");
-
-        HomePage homePage = new HomePage(driver);
-        Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded.");
-
-    }
-
-    @Test
     public void negativeLoginTestEmptyEmailWrongPassword() {
-        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
-
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
 
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
@@ -60,10 +72,7 @@ public class LoginTests {
 
     @Test
     public void negativeLoginTestWrongEmailCorrectPassword() {
-        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
 
@@ -75,10 +84,7 @@ public class LoginTests {
 
     @Test
     public void negativeLoginTestCorrectEmailWrongPassword() {
-        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
 
@@ -90,10 +96,7 @@ public class LoginTests {
 
     @Test
     public void negativeLoginTestCleansingCorrectEmailCleansingWrongPassword() {
-        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
 
@@ -106,10 +109,7 @@ public class LoginTests {
 
     @Test
     public void negativeLoginTestDifferentCaseInCorrectEmailDifferentCaseInCorrectPassword() {
-        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
 
@@ -121,11 +121,6 @@ public class LoginTests {
 
     @Test
     public void negativeLoginTestReturnedToLoginSubmitPage() {
-
-        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
-
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
 
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded());
