@@ -1,7 +1,5 @@
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -9,7 +7,7 @@ import org.testng.annotations.Test;
 public class LoginTests {
 
     @Test
-    public void negativeLoginTestWrongEmailEmptyPassword() {
+    public void negativeLoginTestWrongEmailEmptyPasswordReturnedToLanding() {
 
         System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
 
@@ -28,7 +26,7 @@ public class LoginTests {
     @Test
 
 
-    public void positiveLoginTest() {
+    public void positiveLoginTestCorrectEmailCorrectPassword() {
         System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
 
         WebDriver driver = new ChromeDriver();
@@ -71,9 +69,8 @@ public class LoginTests {
 
         landingPage.Login("a@b.c", "Bukach2019");
 
-        LoginToLinkedinPage loginToLinkedinPage = new LoginToLinkedinPage(driver);
-
-        Assert.assertTrue(loginToLinkedinPage.isLoginToLinkedinPageLoaded(), "Credentials validation is wrong");
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "loginSubmitPage page is not loaded.");
     }
 
     @Test
@@ -87,9 +84,8 @@ public class LoginTests {
 
         landingPage.Login("nct.test1@gmail.com", "111");
 
-        LoginToLinkedinPage loginToLinkedinPage = new LoginToLinkedinPage(driver);
-
-        Assert.assertTrue(loginToLinkedinPage.isLoginToLinkedinPageLoaded(), "Credentials validation is wrong");
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "loginSubmitPage page is not loaded.");
     }
 
     @Test
@@ -103,9 +99,8 @@ public class LoginTests {
 
         landingPage.Login("      nct.test1@gmail.com     ", "     Bukach2019111     ");
 
-        LoginToLinkedinPage loginToLinkedinPage = new LoginToLinkedinPage(driver);
-
-        Assert.assertTrue(loginToLinkedinPage.isLoginToLinkedinPageLoaded(), "Credentials validation is wrong");
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "loginSubmitPage page is not loaded.");
 
     }
 
@@ -120,10 +115,30 @@ public class LoginTests {
 
         landingPage.Login("Nct.test1@Gmail.Com", "BukacH2019");
 
-        LoginToLinkedinPage loginToLinkedinPage = new LoginToLinkedinPage(driver);
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "loginSubmitPage page is not loaded.");
+    }
 
-        Assert.assertTrue(loginToLinkedinPage.isLoginToLinkedinPageLoaded(), "Credentials validation is wrong");
+    @Test
+    public void negativeLoginTestReturnedToLoginSubmitPage() {
+
+        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.linkedin.com/");
+
+        LandingPage landingPage = new LandingPage(driver);
+        Assert.assertTrue(landingPage.isPageLoaded());
+
+        landingPage.Login("nct.test1@gmail.com", "111");
+
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
+
+        Assert.assertEquals(loginSubmitPage.getPasswordValidationMessageText(),
+                "Это неверный пароль. Повторите попытку или измените пароль.",
+                "Wrong validation message for password field.");
+
     }
 
 
-}
+    }
