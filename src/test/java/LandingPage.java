@@ -1,6 +1,8 @@
-import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class LandingPage {
 
@@ -10,27 +12,42 @@ public class LandingPage {
 
 
     private WebDriver driver;
+
+    @FindBy(xpath = "//input[@id='login-submit']")
     private WebElement signInButton;
+
+    @FindBy(xpath = "//input[@id='login-email']")
     private WebElement userMailField;
+
+    @FindBy(xpath = "//input[@id='login-password']")
     private WebElement userPasswordField;
 
 
     public LandingPage(WebDriver driver) {
         this.driver = driver;
-        initElements();
-    }
-
-    private void initElements() {
-        signInButton = driver.findElement(By.xpath("//input[@id='login-submit']"));
-        userMailField = driver.findElement(By.xpath("//input[@id='login-email']"));
-        userPasswordField = driver.findElement(By.xpath("//input[@id='login-password']"));
+        PageFactory.initElements(driver, this);
     }
 
 
-    public void Login(String userEmail, String userPassword) {
+    public HomePage loginToHomePage(String userEmail, String userPassword) {
         userMailField.sendKeys(userEmail);
         userPasswordField.sendKeys(userPassword);
         signInButton.click();
+        return new HomePage(driver);
+    }
+
+    public LoginSubmitPage loginToLoginSubmitPage(String userEmail, String userPassword) {
+        userMailField.sendKeys(userEmail);
+        userPasswordField.sendKeys(userPassword);
+        signInButton.click();
+        return new LoginSubmitPage(driver);
+    }
+
+    public LandingPage loginToLandingPage(String userEmail, String userPassword) {
+        userMailField.sendKeys(userEmail);
+        userPasswordField.sendKeys(userPassword);
+        signInButton.click();
+        return new LandingPage(driver);
     }
 
 
