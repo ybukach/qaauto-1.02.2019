@@ -32,8 +32,18 @@ public class LoginTests {
         };
     }
 
+    @DataProvider
+    public Object[][] invalidData1() {
+        return new Object[][]{
+                {"a@b.c", ""},
+                {"", "123"},
+        };
+    }
+
+
+
     @Test(dataProvider = "validData")
-    public void positiveLoginTestCorrectEmailCorrectPassword(String userEmail, String userPassword) {
+    public void positiveLoginTestReturnedToHomePage(String userEmail, String userPassword) {
 
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
@@ -43,97 +53,51 @@ public class LoginTests {
         HomePage homePage = new HomePage(driver);
         Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded.");
 
-
     }
 
-    @Test
-    public void negativeLoginTestWrongEmailEmptyPasswordReturnedToLanding() {
+    @Test(dataProvider = "invalidData1")
+    public void negativeLoginTestReturnedToLandingPage(String userEmail, String userPassword) {
 
         LandingPage landingPage = new LandingPage(driver);
-        Assert.assertTrue(landingPage.isPageLoaded());
+        Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
 
-        landingPage.Login("a@b.c", "");
+        landingPage.Login(userEmail, userPassword);
 
         Assert.assertTrue(landingPage.isPageLoaded(), "landing page is not loaded");
 
     }
 
-    @Test
-    public void negativeLoginTestEmptyEmailWrongPassword() {
-
-        LandingPage landingPage = new LandingPage(driver);
-        Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
-
-        landingPage.Login("", "123");
-
-        Assert.assertTrue(landingPage.isPageLoaded(), "landing page is not loaded");
-
+    @DataProvider
+    public Object[][] invalidData2() {
+        return new Object[][]{
+                {"nct.test1@gmail.com", "123",  "", "Это неверный пароль. Повторите попытку или измените пароль."},
+                //{"a@b.c", "Bukach2019", "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку."},
+                // {"      nct.test1@gmail.com     ", "     Bukach2019111     ", "Это неверный пароль. Повторите попытку или измените пароль."},
+                //{"Nct.test1@Gmail.Com", "BukacH2019", "Это неверный пароль. Повторите попытку или измените пароль."},
+        };
     }
 
-    @Test
-    public void negativeLoginTestWrongEmailCorrectPassword() {
+    @Test(dataProvider = "invalidData2")
+    public void negativeLoginTestReturnedToLoginSubmitPage(String userEmail, String userPassword,
+                                                           String emailValidationMessage, String passwordValidationMessage ) {
 
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
 
-        landingPage.Login("a@b.c", "Bukach2019");
+        landingPage.Login(userEmail, userPassword);
 
         LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
         Assert.assertTrue(loginSubmitPage.isPageLoaded(), "loginSubmitPage page is not loaded.");
-    }
-
-    @Test
-    public void negativeLoginTestCorrectEmailWrongPassword() {
-
-        LandingPage landingPage = new LandingPage(driver);
-        Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
-
-        landingPage.Login("nct.test1@gmail.com", "111");
-
-        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
-        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "loginSubmitPage page is not loaded.");
-    }
-
-    @Test
-    public void negativeLoginTestCleansingCorrectEmailCleansingWrongPassword() {
-
-        LandingPage landingPage = new LandingPage(driver);
-        Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
-
-        landingPage.Login("      nct.test1@gmail.com     ", "     Bukach2019111     ");
-
-        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
-        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "loginSubmitPage page is not loaded.");
-
-    }
-
-    @Test
-    public void negativeLoginTestDifferentCaseInCorrectEmailDifferentCaseInCorrectPassword() {
-
-        LandingPage landingPage = new LandingPage(driver);
-        Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
-
-        landingPage.Login("Nct.test1@Gmail.Com", "BukacH2019");
-
-        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
-        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "loginSubmitPage page is not loaded.");
-    }
-
-    @Test
-    public void negativeLoginTestReturnedToLoginSubmitPage() {
-
-        LandingPage landingPage = new LandingPage(driver);
-        Assert.assertTrue(landingPage.isPageLoaded());
-
-        landingPage.Login("nct.test1@gmail.com", "111");
-
-        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(driver);
-
         Assert.assertEquals(loginSubmitPage.getPasswordValidationMessageText(),
-                "Это неверный пароль. Повторите попытку или измените пароль.",
+                passwordValidationMessage,
                 "Wrong validation message for password field.");
+        Assert.assertEquals(loginSubmitPage.getEmailValidationMessageText(),
+                emailValidationMessage,
+                "Wrong validation message for email field.");
 
     }
+
+
 
 
     }
