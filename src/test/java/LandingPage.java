@@ -4,6 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+
 public class LandingPage {
 
     public LandingPage() {
@@ -28,7 +29,6 @@ public class LandingPage {
         PageFactory.initElements(driver, this);
     }
 
-
     public HomePage loginToHomePage(String userEmail, String userPassword) {
         userMailField.sendKeys(userEmail);
         userPasswordField.sendKeys(userPassword);
@@ -50,13 +50,21 @@ public class LandingPage {
         return new LandingPage(driver);
     }
 
+    /*public <T> T login(String userEmail, String userPassword, Class<T> expectedPage){
+        userMailField.sendKeys(userEmail);
+        userPasswordField.sendKeys(userPassword);
+        signInButton.click();
+        return PageFactory.initElements(driver, expectedPage);
+    }*/
+
 
     public boolean isPageLoaded() {
         return signInButton.isDisplayed()
                 && driver.getCurrentUrl().equals("https://www.linkedin.com/")
                 && driver.getTitle().equals("LinkedIn: Войти или зарегистрироваться");
 
-            }
+    }
+
 
 
 }

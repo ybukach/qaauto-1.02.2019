@@ -1,6 +1,7 @@
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -27,24 +28,15 @@ public class LoginTests {
     }
 
 
+
     @DataProvider
     public Object[][] validData() {
         return new Object[][]{
                 {"nct.test1@gmail.com", "Bukach2019"},
-               // {"NCT.test1@gmail.com", "Bukach2019"},
-               // {"  nct.test1@gmail.com", "Bukach2019"},
+                // {"NCT.test1@gmail.com", "Bukach2019"},
+                // {"  nct.test1@gmail.com", "Bukach2019"},
         };
     }
-
-    @DataProvider
-    public Object[][] invalidData1() {
-        return new Object[][]{
-                {"a@b.c", ""},
-                {"", "123"},
-        };
-    }
-
-
     @Test(dataProvider = "validData")
     public void successfulLoginTestReturnedToHomePage(String userEmail, String userPassword) {
 
@@ -56,6 +48,13 @@ public class LoginTests {
 
     }
 
+    @DataProvider
+    public Object[][] invalidData1() {
+        return new Object[][]{
+                {"a@b.c", ""},
+                {"", "123"},
+        };
+    }
     @Test(dataProvider = "invalidData1")
     public void negativeLoginTestReturnedToLandingPage(String userEmail, String userPassword) {
 
@@ -95,6 +94,5 @@ public class LoginTests {
                 "Wrong validation message for email field.");
 
     }
-
 
 }
