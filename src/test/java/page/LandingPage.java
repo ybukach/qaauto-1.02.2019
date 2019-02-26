@@ -1,3 +1,4 @@
+package page;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -29,33 +30,20 @@ public class LandingPage {
         PageFactory.initElements(driver, this);
     }
 
-    public HomePage loginToHomePage(String userEmail, String userPassword) {
-        userMailField.sendKeys(userEmail);
-        userPasswordField.sendKeys(userPassword);
-        signInButton.click();
-        return new HomePage(driver);
-    }
 
-    public LoginSubmitPage loginToLoginSubmitPage(String userEmail, String userPassword) {
+    public <T> T login(String userEmail, String userPassword) {
         userMailField.sendKeys(userEmail);
         userPasswordField.sendKeys(userPassword);
         signInButton.click();
-        return new LoginSubmitPage(driver);
+        if (driver.getCurrentUrl().contains("/feed/")) {
+            return (T) new HomePage(driver);
+        }
+        if (driver.getCurrentUrl().contains("https://www.linkedin.com/uas/login-submit?loginSubmitSource=GUEST_HOME")) {
+            return (T) new LoginSubmitPage(driver);
+        } else {
+            return (T) new LandingPage(driver);
+        }
     }
-
-    public LandingPage loginToLandingPage(String userEmail, String userPassword) {
-        userMailField.sendKeys(userEmail);
-        userPasswordField.sendKeys(userPassword);
-        signInButton.click();
-        return new LandingPage(driver);
-    }
-
-    /*public <T> T login(String userEmail, String userPassword, Class<T> expectedPage){
-        userMailField.sendKeys(userEmail);
-        userPasswordField.sendKeys(userPassword);
-        signInButton.click();
-        return PageFactory.initElements(driver, expectedPage);
-    }*/
 
 
     public boolean isPageLoaded() {

@@ -1,32 +1,13 @@
+package test;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import page.HomePage;
+import page.LandingPage;
+import page.LoginSubmitPage;
 
-public class LoginTests {
-    WebDriver driver;
-    LandingPage landingPage;
-
-
-    @BeforeMethod
-    public void beforeMethod() {
-        System.setProperty("webdriver.chrome.driver", "/Users/yulia.bukach/Downloads/chromedriver");
-        driver = new ChromeDriver();
-        driver.get("https://www.linkedin.com/");
-        landingPage = new LandingPage(driver);
-        //loginSubmitPage = new LoginSubmitPage(driver);
-    }
-
-    @AfterMethod
-    public void afterMethod() {
-        driver.quit();
-    }
-
+public class LoginTests extends BaseTest {
 
 
     @DataProvider
@@ -42,7 +23,7 @@ public class LoginTests {
 
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
 
-       HomePage homePage = landingPage.loginToHomePage(userEmail, userPassword);
+       HomePage homePage = landingPage.login(userEmail, userPassword);
 
        Assert.assertTrue(homePage.isPageLoaded(), "Home page is not loaded.");
 
@@ -61,7 +42,7 @@ public class LoginTests {
         LandingPage landingPage = new LandingPage(driver);
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
 
-        landingPage.loginToLandingPage(userEmail, userPassword);
+        landingPage.login(userEmail, userPassword);
 
         Assert.assertTrue(landingPage.isPageLoaded(), "landing page is not loaded");
 
@@ -83,7 +64,7 @@ public class LoginTests {
 
         Assert.assertTrue(landingPage.isPageLoaded(), "Landing page is not loaded.");
 
-        LoginSubmitPage loginSubmitPage = landingPage.loginToLoginSubmitPage(userEmail, userPassword);
+        LoginSubmitPage loginSubmitPage = landingPage.login(userEmail, userPassword);
 
         Assert.assertTrue(loginSubmitPage.isPageLoaded(), "loginSubmitPage page is not loaded.");
         Assert.assertEquals(loginSubmitPage.getPasswordValidationMessageText(),
