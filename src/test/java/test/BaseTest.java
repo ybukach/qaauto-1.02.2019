@@ -20,9 +20,9 @@ public class BaseTest  {
         //loginSubmitPage = new page.LoginSubmitPage(driver);
     }
 
-    /*@AfterMethod
+    @AfterMethod
     public void afterMethod() {
         driver.quit();
-    }*/
+    }
 
 }
