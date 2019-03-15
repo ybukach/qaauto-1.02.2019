@@ -36,6 +36,18 @@ public class LoginTests extends BaseTest {
                 {"", "123"},
         };
     }
+
+    /**
+     * * Verify negative login functionality
+     * Scenario:
+     * * - Open new Browser
+     * - Navigate to http://www.linkedin.com
+     * - Verify that Landing page is loaded
+     * - Login with invalid credentials
+     * - Verify that Landing page is loaded
+     * @param userEmail user email as login credential
+     * @param userPassword user password as password credential
+     */
     @Test(dataProvider = "invalidData1")
     public void negativeLoginTestReturnedToLandingPage(String userEmail, String userPassword) {
 
@@ -58,6 +70,20 @@ public class LoginTests extends BaseTest {
         };
     }
 
+    /**
+     * Verify negative login functionality
+     * Scenario:
+     * - Open new Browser
+     * - Navigate to http://www.linkedin.com
+     * - Verify that Landing page is loaded
+     * - Login with invalid credentials
+     * - Verify that loginSubmitPage page is loaded
+     * - Check that correct validation message is displayed
+     * @param userEmail user email as login credential
+     * @param userPassword user password as password credential
+     * @param emailValidationMessage validation message about incorrect email
+     * @param passwordValidationMessage validation message about incorrect password
+     */
     @Test(dataProvider = "invalidData2")
     public void negativeLoginTestReturnedToLoginSubmitPage(String userEmail, String userPassword,
                                                            String emailValidationMessage, String passwordValidationMessage) {

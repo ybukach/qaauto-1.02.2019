@@ -6,10 +6,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Page Object class for Search page
+ */
 public class SearchPage {
     WebDriver driver;
 
@@ -20,11 +22,19 @@ public class SearchPage {
     private List<WebElement> searchResultElements;
 
 
+    /**
+     * Constructor for Home Page.
+     * @param driver - Webdriver instance from BaseTest
+     */
     public SearchPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
+    /**
+     * Method that check if page is loaded
+     * @return true/false
+     */
     public boolean isPageLoaded() {
         return searchResultsTotal.isDisplayed()
                 && driver.getCurrentUrl().contains("/search/results")
@@ -32,11 +42,17 @@ public class SearchPage {
     }
 
 
+    /** Method that calculate search results
+     * @return quantity of found search results
+     */
     public int getSearchResultCount() {
         return searchResultElements.size();
 
     }
 
+    /** Method that create list of found search results
+     * @return list having strings with search results
+     */
     public List<String> getSearchResultsList() {
         List<String> searchResultStringsList = new ArrayList<String>();
         for (WebElement searchResultElement : searchResultElements) {
