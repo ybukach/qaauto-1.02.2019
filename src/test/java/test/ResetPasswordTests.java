@@ -2,7 +2,9 @@ package test;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import page.ChooseNewPasswordPage;
 import page.RequestPasswordResetPage;
+import page.RequestPasswordResetSubmitPage;
 
 public class ResetPasswordTests extends BaseTest {
 
@@ -14,11 +16,15 @@ public class ResetPasswordTests extends BaseTest {
         RequestPasswordResetPage requestPasswordResetPage =
                 landingPage.clickOnForgotPasswordLink();
         Assert.assertTrue(requestPasswordResetPage.isPageLoaded(),
-                "RequestPasswordResetPage is not loaded");
+                "RequestPasswordReset page is not loaded.");
 
-        requestPasswordResetPage.findAccount(userEmail);
+        RequestPasswordResetSubmitPage requestPasswordResetSubmitPage =
+                requestPasswordResetPage.findAccount(userEmail);
 
-        String resetPasswordURL =
+        ChooseNewPasswordPage chooseNewPasswordPage =
+                requestPasswordResetSubmitPage.navigateToLinkFromEmail();
+
+
 
 
     }

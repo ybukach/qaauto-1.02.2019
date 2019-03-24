@@ -28,7 +28,7 @@ public class RequestPasswordResetPage {
                 && driver.getTitle().contains("Изменить пароль | LinkedIn");
     }
 
-    public void findAccount(String userEmail) {
+    public RequestPasswordResetSubmitPage findAccount(String userEmail) {
         userEmailField.sendKeys(userEmail);
 
 
@@ -44,5 +44,6 @@ public class RequestPasswordResetPage {
         System.out.println("Content: " + message);
 
 
+        return new RequestPasswordResetSubmitPage(driver);
     }
 }
